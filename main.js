@@ -910,6 +910,17 @@ function initsubmit() {
 	  	document.getElementById("card_wakeup").style.display = "none";
 		}
 
+		if ((paedi_mode == 0) && (document.getElementById("select_model").value == "MethadoneTBC")) {
+			if (document.getElementById("select_methdilution").value == "custom") {
+				drug_sets[0].infusate_concentration = document.getElementById("methdilution").innerHTML *1;
+			} else {
+				drug_sets[0].infusate_concentration = document.getElementById("select_methdilution").value * 1;
+			}
+	  	document.getElementById("drugname").innerHTML = "Methadone <span style='opacity:0.5'>(" + drug_sets[drug_sets_index].infusate_concentration + "mg/ml)</span>";
+	  	document.getElementById("card_retrospective").style.display = "none";
+	  	document.getElementById("card_wakeup").style.display = "none";
+		}
+
 		if (((paedi_mode == 0) && (
 				(document.getElementById("select_model").value == "Marsh") || 
 				(document.getElementById("select_model").value == "Schnider") ||
@@ -974,11 +985,20 @@ function initsubmit() {
 			infused_units_fields[i].innerHTML = drug_sets[drug_sets_index].infused_units;
 		}
 
-		if (drug_sets[0].drug_name == "Propofol") {
-			myChart.options.scales.y.title.text = "Concentration (mcg/ml)";
-		} else {
-			myChart.options.scales.y.title.text = "Concentration (ng/ml)";
-		}
+		if (
+		  	drug_sets[0].drug_name == "Propofol" ||
+  			drug_sets[0].drug_name == "Methadone"
+			) {
+  			myChart.options.scales.y.title.text = "Concentration (mcg/ml)";
+			} else {
+  			myChart.options.scales.y.title.text = "Concentration (ng/ml)";
+			}
+		
+//		if (drug_sets[0].drug_name == "Propofol") {
+//			myChart.options.scales.y.title.text = "Concentration (mcg/ml)";
+//		} else {
+//			myChart.options.scales.y.title.text = "Concentration (ng/ml)";
+//		}
 		
 		if (age<0 || age>=100) {
 			validateText = validateText.concat("Invalid age (accepted range >0 to <100y)" + "<br>");
@@ -2027,6 +2047,8 @@ function switchpaedimode(arg) {
 			temptext = `<div class="modelOptionLine1">Dexmedetomidine</div><div class="modelOptionLine2">Hannivoort</div>`;
 		} else if (tempmodel == "Kamp") {
 			temptext = `<div class="modelOptionLine1">Ketamine</div><div class="modelOptionLine2">Kamp</div>`;
+		} else if (tempmodel == "MethadoneTBC") {
+			temptext = `<div class="modelOptionLine1">Methadone</div><div class="modelOptionLine2">MethadoneTBC</div>`;	
 		} else if (tempmodel == "Complex") {
 			temptext = `<div class="modelOptionLine1">Propofol + Opioid</div><div class="modelOptionLine2">Complex</div>`;
 		}
@@ -2085,6 +2107,7 @@ function switchpaedimode(arg) {
 				document.getElementById("row_dexdilution").style.display = "none";
 				document.getElementById("row_ketdilution").style.display = "table-row";
 			}
+			
 			document.getElementById("row_propofoldilution").style.display = "none";
 		} else {
 			//is propofol
@@ -2290,6 +2313,13 @@ function sendToValidate(arg) {
 		} else {
 			document.getElementById("row_ketdilution").style.display = "none";
 		}
+		if (document.getElementById("select_model").value === "MethadoneTBC") {
+			document.getElementById("row_gender").style.display = "none";
+			document.getElementById("row_height").style.display = "none";
+			document.getElementById("row_methdilution").style.display = "table-row";
+		} else {
+			document.getElementById("row_methdilution").style.display = "none";
+		}
 		if ((document.getElementById("select_model").value == "Marsh") || (document.getElementById("select_model").value == "Schnider") || (document.getElementById("select_model").value == "Paedfusor") || (document.getElementById("select_model").value == "Eleveld")) {
 			//is propofol
 			document.getElementById("row_propofoldilution").style.display = "table-row";
@@ -2297,7 +2327,7 @@ function sendToValidate(arg) {
 			document.getElementById("row_propofoldilution").style.display = "none";
 		}
 	}
-	if ((paedi_mode == 0) && (document.getElementById("select_model").value != "Shafer") && (document.getElementById("select_model").value != "Maitre") && (document.getElementById("select_model").value != "Hannivoort") && (document.getElementById("select_model").value != "Kamp")) {
+	if ((paedi_mode == 0) && (document.getElementById("select_model").value != "Shafer") && (document.getElementById("select_model").value != "Maitre") && (document.getElementById("select_model").value != "Hannivoort") && (document.getElementById("select_model").value != "Kamp") && (document.getElementById("select_model").value != "MethadoneTBC")) {
 			document.getElementById("row_gender").style.display = "table-row";
 			document.getElementById("row_height").style.display = "table-row";
 	}
@@ -2366,6 +2396,10 @@ function displayModelOptions() {
 				</div>
 				<div class="modelOptionContainer">
 					<div class="modelOption" id="modelHannivoort"><div class="modelOptionLine1">Dexmedetomidine</div><div class="modelOptionLine2">Hannivoort</div></div>				
+				</div>
+			<div class="modelOptionContainerOuter">
+				<div class="modelOptionContainer">
+					<div class="modelOption" id="modelMethadoneTBC"><div class="modelOptionLine1">Methadone</div><div class="modelOptionLine2">MethadoneTBC</div></div>
 				</div>
 			</div>
 		`;
@@ -4657,6 +4691,16 @@ function change_ketdilution(paramket) {
 	}
 }
 
+function change_methdilution(parammeth) {
+	if (parammeth=="custom") {
+		document.getElementById("custom_methdilution").style.display = 'inline-block';
+		popup_dilution('methdilution','methadone');
+	} else {
+		document.getElementById("custom_methdilution").style.display = 'none';
+		sendToValidate(0);
+	}
+}
+
 function change_opioiddilution(paramo) {
 	if (paramo=="custom") {
 		document.getElementById("custom_opioiddilution").style.display = 'inline-block';
@@ -4702,6 +4746,10 @@ function popup_dilution(targetid,targetname) {
 		targetnamecaps = "Ketamine";
 		upperlimit = 50;
 		tempunit = "mg";
+	} else if (targetname == "methadone") {
+		targetnamecaps = "Methadone";
+		upperlimit = 1;
+		tempunit = "mg";	
 	}
 	displayWarning(`Custom ${targetname} dilution`,
 		`
@@ -4756,7 +4804,10 @@ function popup_dilution(targetid,targetname) {
 					document.getElementById("custom_propdilution").style.display = "none";					
 				} else if (targetname == "ketamine") {
 					document.getElementById("select_ketdilution").value = "10";
-					document.getElementById("custom_ketdilution").style.display = "none";					
+					document.getElementById("custom_ketdilution").style.display = "none";	
+				} else if (targetname == "methadone") {
+					document.getElementById("select_methdilution").value = "1";
+					document.getElementById("custom_methdilution").style.display = "none";					
 
 				}
 			}
@@ -4787,6 +4838,9 @@ function popup_dilution(targetid,targetname) {
 				} else if (targetname == "ketamine") {
 					document.getElementById("select_ketdilution").value = "custom";
 					document.getElementById("custom_ketdilution").style.display = "inline-block";										
+				} else if (targetname == "methadone") {
+					document.getElementById("select_methdilution").value = "custom";
+					document.getElementById("custom_methdilution").style.display = "inline-block";		
 				}
 				sendToValidate(0);
 			}

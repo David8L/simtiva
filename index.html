@@ -145,6 +145,7 @@
 									<option value="Kamp">Ketamine (Kamp)</option>
 									<option value="Domino">Ketamine (Domino)</option>
 									<option value="Complex">Complex (Dual mode)</option>
+									<option value="MethadoneTBC">Methadone (MethadoneTBC)</option>
 								
 							</select>
 
@@ -235,6 +236,16 @@
 							</select>
 							<div id="custom_ketdilution" onclick="popup_dilution('ketdilution','ketamine')">
 								<span id="ketdilution">_</span>mg/ml
+							</div>
+						</td>
+					</tr>
+					<tr id="row_methdilution"><td style="letter-spacing:-0.5px">Concentration <span style="font-size: 85%">(mg/ml)</span></td>
+						<td>
+							<select id="select_methdilution" onchange="change_methdilution(this.value)">
+								<option value="1" selected>1mg/ml</option>
+							</select>
+							<div id="custom_methdilution" onclick="popup_dilution('methdilution','methadone')">
+								<span id="methdilution">_</span>mg/ml
 							</div>
 						</td>
 					</tr>

@@ -6086,6 +6086,33 @@ function readmodel(x, drug_set_index) {
 		"ke0 = " + rnd3(drug_sets[drug_set_index].k41) + "<br>" +
 		"ke0 (analgesia nociception index) from Navarette (J Clin Monit Comput 2025;39(2):349-354)";
 	}
+	if (x == "MethadoneTBC") {
+		//from StanpumpR James Xie
+		drug_sets[drug_set_index].drug_name = "Methadone";
+		drug_sets[drug_set_index].conc_units = "mcg";
+		drug_sets[drug_set_index].infused_units = "mg";
+		drug_sets[drug_set_index].inf_rate_permass_factor = 1;
+		drug_sets[drug_set_index].inf_rate_permass_unit = "mg/kg/h";
+		drug_sets[drug_set_index].inf_rate_permass_dp = 100;
+		
+		drug_sets[drug_set_index].vc = 0.18 * mass;
+		drug_sets[drug_set_index].k10 = 0.00806;
+		drug_sets[drug_set_index].k12 = 0.408;
+		drug_sets[drug_set_index].k13 = 0.112;
+		drug_sets[drug_set_index].k21 = 0.06;
+		drug_sets[drug_set_index].k31 = 0.00114;
+		drug_sets[drug_set_index].k41 = 0.07;
+
+		drug_sets[drug_set_index].modeltext = "MethadoneTBC model (...)" +
+		"vc = " + rnd3(drug_sets[drug_set_index].vc) + "<br>" +
+		"k10 = " + rnd3(drug_sets[drug_set_index].k10) + "<br>" + 
+		"k12 = " + rnd3(drug_sets[drug_set_index].k12) + "<br>" +
+		"k13 = " + rnd3(drug_sets[drug_set_index].k13) + "<br>" +
+		"k21 = " + rnd3(drug_sets[drug_set_index].k21) + "<br>" +
+		"k31 = " + rnd3(drug_sets[drug_set_index].k31) + "<br>" +
+		"ke0 = " + rnd3(drug_sets[drug_set_index].k41) + "<br>" +
+		"ke0 made up at 0.07";
+	}
 	if (x == "Dyck") {
 		drug_sets[drug_set_index].vc = 7.99;
 		v2 = 13.8;
